@@ -30,9 +30,8 @@ export default function ProjectsPage() {
       technologies: ["React", "Node.js", "Api", "Tailwind"],
       githubLink: "https://github.com/divyanshu-prakash-rx/FlamingoNews",
       liveLink: "https://flamingonews.onrender.com/",
-        category: 'Web Development'
+      category: 'Web Development'
     },
-
     {
       title: "TextCase Master",
       description:
@@ -48,7 +47,7 @@ export default function ProjectsPage() {
         "Web portal for the health center, featuring an intuitive Reimbursement Panel and streamlined online forms for enhanced user experience and operational efficiency.",
       technologies: ["React", "Bootstrap"],
       githubLink:
-        "hhttps://github.com/divyanshu-prakash-rx/IITBH_Health_centre_Reimbursement_website",
+        "https://github.com/divyanshu-prakash-rx/IITBH_Health_centre_Reimbursement_website",
       liveLink:
         "https://iitbh-health-centre-reimbursement-website.onrender.com/",
       category: "Web Development",
@@ -92,9 +91,9 @@ export default function ProjectsPage() {
           {filteredProjects.map((project, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow flex flex-col"
             >
-              <div className="p-6">
+              <div className="p-6 flex-grow">
                 <h3 className="text-xl font-semibold mb-3">{project.title}</h3>
                 <p className="text-gray-600 mb-4">{project.description}</p>
 
@@ -108,25 +107,25 @@ export default function ProjectsPage() {
                     </span>
                   ))}
                 </div>
+              </div>
 
-                <div className="flex justify-between mt-4">
-                  <a
-                    href={project.githubLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center text-gray-700 hover:text-black"
-                  >
-                    <Github className="mr-2" /> GitHub
-                  </a>
-                  <a
-                    href={project.liveLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center text-blue-600 hover:text-blue-800"
-                  >
-                    Live Site <ExternalLink className="ml-2" />
-                  </a>
-                </div>
+              <div className="p-6 border-t border-gray-100 flex justify-between">
+                <a
+                  href={project.githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-gray-700 hover:text-black"
+                >
+                  <Github className="mr-2" /> GitHub
+                </a>
+                <a
+                  href={project.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-blue-600 hover:text-blue-800"
+                >
+                  Live Site <ExternalLink className="ml-2" />
+                </a>
               </div>
             </div>
           ))}

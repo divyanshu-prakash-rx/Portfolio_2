@@ -89,12 +89,12 @@ export default function ChatbotComponent() {
     return chatHistory.map((message, index) => (
       <div 
         key={index} 
-        className={`flex mb-4 ${
+        className={`flex mb-3 ${
           message.role === 'user' ? 'justify-end' : 'justify-start'
         }`}
       >
         <div 
-          className={`max-w-[70%] p-3 rounded-lg ${
+          className={`max-w-[80%] p-2.5 rounded-lg text-sm ${
             message.role === 'user' 
               ? 'bg-blue-500 text-white' 
               : 'bg-gray-200 text-gray-800'
@@ -108,6 +108,7 @@ export default function ChatbotComponent() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
+      {/* Auto Notification */}
       {autoNotification && (
         <div className="absolute bottom-20 right-0 w-64 bg-white shadow-lg rounded-lg p-4 border animate-fade-in">
           <div className="flex justify-between items-center mb-2">
@@ -126,7 +127,7 @@ export default function ChatbotComponent() {
         </div>
       )}
 
-      {/* Chatbot */}
+      {/* Chatbot Trigger Button */}
       {!isOpen && (
         <button 
           onClick={toggleChat}
@@ -136,34 +137,40 @@ export default function ChatbotComponent() {
         </button>
       )}
 
-      {/* Chatbot Panel*/}
+      {/* Chatbot Panel */}
       {isOpen && (
         <div 
           className={`
-            w-80 bg-white rounded-xl shadow-2xl border 
-            ${isMinimized ? 'h-16 overflow-hidden' : 'h-[500px] flex flex-col'}
+            w-80 md:w-96 lg:w-[420px] 
+            bg-white rounded-xl shadow-2xl border 
+            fixed right-6 bottom-6
+            ${isMinimized ? 'h-16 overflow-hidden' : 'h-[600px] flex flex-col'}
           `}
         >
+          {/* Header */}
           <div className="bg-blue-600 text-white p-4 rounded-t-xl flex justify-between items-center">
-            <h3 className="font-semibold">Portfolio Assistant</h3>
+            <h3 className="font-semibold text-lg">Portfolio Assistant</h3>
             <div className="flex space-x-2">
               <button 
                 onClick={() => setIsMinimized(!isMinimized)}
                 className="hover:bg-blue-700 p-1 rounded"
+                aria-label={isMinimized ? "Maximize" : "Minimize"}
               >
                 {isMinimized ? <Maximize2 size={20} /> : <Minimize2 size={20} />}
               </button>
               <button 
                 onClick={toggleChat}
                 className="hover:bg-blue-700 p-1 rounded"
+                aria-label="Close"
               >
                 <X size={20} />
               </button>
             </div>
           </div>
 
+          {/* Chat Messages */}
           {!isMinimized && (
-            <div className="flex-grow overflow-y-auto p-4">
+            <div className="flex-grow overflow-y-auto p-4 space-y-4">
               {renderChatMessages()}
               <div ref={chatEndRef} />
             </div>
@@ -171,22 +178,23 @@ export default function ChatbotComponent() {
 
           {/* Chat Input */}
           {!isMinimized && (
-            <div className="p-4 border-t flex items-center">
+            <div className="p-4 border-t flex items-center space-x-2">
               <input 
                 type="text"
                 value={userMessage}
                 onChange={(e) => setUserMessage(e.target.value)}
                 onKeyDown={handleKeyPress}
                 placeholder="Type a message..."
-                className="flex-grow mr-2 p-2 border rounded"
+                className="flex-grow p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={isLoading}
               />
               <button 
                 onClick={sendMessage}
                 disabled={isLoading || !userMessage.trim()}
                 className={`
-                  bg-blue-600 text-white p-2 rounded 
+                  bg-blue-600 text-white p-3 rounded-lg 
                   ${(isLoading || !userMessage.trim()) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}
+                  transition-all duration-200
                 `}
               >
                 <Send size={20} />
