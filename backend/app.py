@@ -5,6 +5,9 @@ from typing import Annotated, Literal, Sequence, TypedDict
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask import Flask, send_from_directory
+
+app = Flask(__name__, static_folder="static")
 
 from langchain import hub
 from langchain_community.document_loaders import WebBaseLoader, PyPDFLoader
@@ -241,6 +244,10 @@ def chatbot():
 
     bot_reply = query_llm(user_message)
     return jsonify({"reply": bot_reply})
+
+@app.route("/backend/static/<path:filename>")
+def serve_static(filename):
+    return send_from_directory("static", filename)
 
 if __name__ == "__main__":
     app.run(debug=True)

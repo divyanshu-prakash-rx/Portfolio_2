@@ -26,7 +26,7 @@ export default function HomePage() {
             View Projects <ArrowRight className="ml-2" />
           </a>
           <a 
-            href="/resume.pdf" 
+            href="/backend/static/resume.pdf" 
             download 
             className="flex items-center border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors"
           >
