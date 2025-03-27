@@ -11,3 +11,4 @@ chromadb
 together
 pypdf
 langchain-together
+gunicorn
