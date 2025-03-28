@@ -1,5 +1,8 @@
 # Portfolio Website
 
+## 🌍 Live Demo
+Check out the live version here: [Portfolio Website](https://stately-smakager-c9f50c.netlify.app/)
+
 ## 🚀 Overview
 This is my personal portfolio website showcasing my skills, projects, and experience in software development and robotics. The website is designed to be responsive and interactive, built with modern web technologies. It also features an AI-powered chatbot fine-tuned over my resume to assist visitors with queries about me.
 
@@ -36,8 +39,6 @@ This is my personal portfolio website showcasing my skills, projects, and experi
 ### 🔹 Chatbot Interaction
 ![image](https://github.com/user-attachments/assets/58cf44c3-ce1a-43f5-a2a9-8b71be336141)
 
-## 🌍 Live Demo
-Check out the live version here: [Portfolio Website](https://stately-smakager-c9f50c.netlify.app/)
 
 ## 📂 Installation
 To run this project locally, follow these steps:
