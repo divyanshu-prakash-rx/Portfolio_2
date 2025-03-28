@@ -53,7 +53,7 @@ export default function ContactPage() {
               Let's Connect
             </h2>
             <p className="text-gray-600 mb-8">
-              Have a project in mind? Drop me a message and I'll get back to you.
+              Have Something to talk in mind? Drop me a message and I'll get back to you.
             </p>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>

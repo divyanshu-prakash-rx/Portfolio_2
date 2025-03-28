@@ -2,12 +2,12 @@ import React from "react";
 import {
   Code,
   Server,
-  Database,
-  ChevronDown,
-  Book,
   Cpu,
   Globe,
   Award,
+  Zap,
+  Target,
+  Layers
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -15,12 +15,12 @@ export default function AboutPage() {
   const skills = [
     {
       category: "Engineering",
-      icon: <Cpu className="w-6 h-6" />,
+      icon: <Cpu className="w-8 h-8 text-emerald-500" />,
       items: ["Robotics", "Automation", "Mechatronics", "System Design"],
     },
     {
       category: "Computer Science",
-      icon: <Code className="w-6 h-6" />,
+      icon: <Code className="w-8 h-8 text-indigo-500" />,
       items: [
         "Algorithms",
         "Machine Learning",
@@ -30,7 +30,7 @@ export default function AboutPage() {
     },
     {
       category: "Web Development",
-      icon: <Globe className="w-6 h-6" />,
+      icon: <Globe className="w-8 h-8 text-blue-500" />,
       items: ["React", "HTML/CSS", "Node.js", "MongoDB"],
     },
   ];
@@ -51,82 +51,74 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24">
-      <div className="max-w-5xl mx-auto px-4">
-        <div className="space-y-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pt-24 pb-16">
+      <div className="max-w-6xl mx-auto px-4">
+        <motion.div 
+          className="space-y-16"
+          initial="hidden"
+          animate="show"
+          variants={containerAnimation}
+        >
           {/* Intro Section */}
-          <motion.div
-            className="text-center"
-            initial="hidden"
-            animate="show"
-            variants={containerAnimation}
-          >
+          <div className="text-center">
             <motion.h1
-              className="text-5xl md:text-7xl font-bold mb-6 "
+              className="text-4xl md:text-6xl font-extrabold mb-6 bg-clip-text "
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              Hello, I'm Divyanshu Prakash
+              Hey there, I'm Divyanshu
             </motion.h1>
             <motion.p
-              className="text-xl md:text-2xl font-semibold mb-8 text-gray-800"
+              className="text-2xl md:text-3xl font-semibold mb-8 text-gray-700"
               variants={itemAnimation}
             >
               Mechatronics Engineer & Computer Science Specialist
             </motion.p>
             <motion.p
-              className="text-base text-gray-700 mb-8 max-w-2xl mx-auto"
+              className="text-lg text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed"
               variants={itemAnimation}
             >
-              I'm pursuing a unique dual qualification at IIT Bhilai: a B.Tech
-              in Mechatronics, Robotics and Automation Engineering along with
-              Honours in Computer Science and Engineering. This
-              interdisciplinary combination allows me to bridge the gap between
-              physical systems and computational intelligence. I leverage my
-              understanding of mechanical systems, electronics, and advanced
-              computer science concepts to develop innovative solutions that
-              integrate hardware with sophisticated software systems.
+              Bridging the gap between mechanical engineering and computational intelligence at IIT Bhilai. I combine deep technical expertise in robotics, automation, and advanced computer science to create innovative, interdisciplinary solutions that push the boundaries of technology.
             </motion.p>
-            <ChevronDown className="w-8 h-8 mx-auto animate-bounce text-black" />
-          </motion.div>
+          </div>
 
           {/* Education Section */}
-          <motion.div
-            className="rounded-lg shadow-lg p-8 gradient-bg-light"
+          <motion.div 
+            className="bg-white rounded-2xl shadow-2xl p-10"
             variants={itemAnimation}
           >
-            <div className="flex items-center mb-6">
-              <Book className=" w-6 h-6 mr-2" />
-              <h2 className="text-3xl font-bold text-black">Education</h2>
+            <div className="flex items-center mb-8">
+              <Award className="w-10 h-10 mr-4 text-orange-600" />
+              <h2 className="text-4xl font-bold text-gray-800">Education</h2>
             </div>
-            <div className="border-l-2 border-orange-600 pl-4 space-y-8">
-              <motion.div variants={itemAnimation}>
-                <div className="flex items-center">
-                  <h3 className="text-xl font-semibold text-black">
-                    B.Tech in Mechatronics Engineering
-                  </h3>
-                  <Award className="w-5 h-5 ml-2 text-orange-600" />
-                </div>
-                <p className="text-orange-600 font-semibold text-lg">
+            <div className="grid md:grid-cols-2 gap-8">
+              <motion.div 
+                className="border-l-4 border-orange-500 pl-6"
+                variants={itemAnimation}
+              >
+                <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                  B.Tech in Mechatronics Engineering
+                </h3>
+                <p className="text-xl text-orange-600 font-semibold mb-2">
                   IIT Bhilai
                 </p>
-                <p className="font-semibold text-base text-gray-600">
+                <p className="text-gray-600 font-medium">
                   2022 - Present
                 </p>
               </motion.div>
 
-              <motion.div variants={itemAnimation}>
-                <div className="flex items-center">
-                  <h3 className="text-xl font-semibold text-black">
-                    Honours in Computer Science and Engineering
-                  </h3>
-                  <Award className="w-5 h-5 ml-2 text-orange-600" />
-                </div>
-                <p className="text-orange-600 font-semibold text-lg">
+              <motion.div 
+                className="border-l-4 border-indigo-500 pl-6"
+                variants={itemAnimation}
+              >
+                <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                  Honours in Computer Science
+                </h3>
+                <p className="text-xl text-indigo-600 font-semibold mb-2">
                   IIT Bhilai
                 </p>
-                <p className="font-semibold text-base text-gray-600">
+                <p className="text-gray-600 font-medium">
                   2024 - Present
                 </p>
               </motion.div>
@@ -135,27 +127,33 @@ export default function AboutPage() {
 
           {/* Skills Section */}
           <div>
-            <h3 className="text-3xl font-bold text-center mb-8">My Skills</h3>
+            <h3 className="text-4xl font-bold text-center mb-12 text-gray-800">
+              My Technical Skills
+            </h3>
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 font-semibold text-lg mb-9"
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
               variants={containerAnimation}
             >
               {skills.map((skill, index) => (
                 <motion.div
                   key={index}
-                  className="rounded-lg shadow-lg p-6 transform hover:scale-105 transition-transform duration-300 gradient-bg-light text-gray-800 "
+                  className="bg-white rounded-2xl shadow-xl p-8 transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
                   variants={itemAnimation}
-                  whileHover={{ scale: 1.0005, transition: { duration: 0.2 } }}
                 >
-                  <div className="flex items-center mb-4">
-                    <div>{skill.icon}</div>
-                    <h3 className="text-xl font-bold ml-2">{skill.category}</h3>
+                  <div className="flex items-center mb-6">
+                    {skill.icon}
+                    <h3 className="text-2xl font-bold ml-4 text-gray-800">
+                      {skill.category}
+                    </h3>
                   </div>
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {skill.items.map((item, i) => (
-                      <li key={i} className="flex items-center">
-                        <span className="w-2 h-2 rounded-full mr-2 bg-orange-600" />
-                        <span className="text-gray-800">{item}</span>
+                      <li 
+                        key={i} 
+                        className="flex items-center text-gray-700 text-lg"
+                      >
+                        <Zap className="w-5 h-5 mr-3 text-orange-500" />
+                        {item}
                       </li>
                     ))}
                   </ul>
@@ -163,7 +161,43 @@ export default function AboutPage() {
               ))}
             </motion.div>
           </div>
-        </div>
+
+          {/* Key Strengths */}
+          <div className="bg-white rounded-2xl shadow-xl p-10">
+            <h3 className="text-4xl font-bold text-center mb-12 text-gray-800">
+              Key Strengths
+            </h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <Target className="w-16 h-16 mx-auto mb-6 text-emerald-500" />
+                <h4 className="text-2xl font-semibold mb-4 text-gray-800">
+                  Precision
+                </h4>
+                <p className="text-gray-600">
+                  Meticulous approach to problem-solving with attention to detail
+                </p>
+              </div>
+              <div className="text-center">
+                <Layers className="w-16 h-16 mx-auto mb-6 text-indigo-500" />
+                <h4 className="text-2xl font-semibold mb-4 text-gray-800">
+                  Versatility
+                </h4>
+                <p className="text-gray-600">
+                  Ability to work across multiple domains and technologies
+                </p>
+              </div>
+              <div className="text-center">
+                <Zap className="w-16 h-16 mx-auto mb-6 text-orange-500" />
+                <h4 className="text-2xl font-semibold mb-4 text-gray-800">
+                  Innovation
+                </h4>
+                <p className="text-gray-600">
+                  Creative problem-solving with cutting-edge technological solutions
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

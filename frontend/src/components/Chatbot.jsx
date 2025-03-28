@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, Send, X, Minimize2, Maximize2, Info } from 'lucide-react';
+import { MessageCircle, Send, X, Minimize2, Maximize2, Info, Bot } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ChatbotComponent() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +26,7 @@ export default function ChatbotComponent() {
       const notificationTimer = setTimeout(() => {
         if (!isOpen) {
           setAutoNotification({
-            message: "Have any questions about my portfolio? I'm here to help!",
+            message: "Have questions about my portfolio? I'm here to help!",
             timestamp: Date.now()
           });
           
@@ -36,7 +37,6 @@ export default function ChatbotComponent() {
     }
   }, []); 
 
-  // Function for handling message to chatbot
   const sendMessage = async () => {
     if (!userMessage.trim()) return;
 
@@ -87,122 +87,146 @@ export default function ChatbotComponent() {
 
   const renderChatMessages = () => {
     return chatHistory.map((message, index) => (
-      <div 
+      <motion.div 
         key={index} 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
         className={`flex mb-3 ${
           message.role === 'user' ? 'justify-end' : 'justify-start'
         }`}
       >
         <div 
-          className={`max-w-[80%] p-2.5 rounded-lg text-sm ${
+          className={`max-w-[80%] p-3 rounded-xl text-sm shadow-md ${
             message.role === 'user' 
-              ? 'bg-blue-500 text-white' 
-              : 'bg-gray-200 text-gray-800'
+              ? 'bg-indigo-500 text-white' 
+              : 'bg-gray-100 text-gray-800'
           }`}
         >
           {message.content}
         </div>
-      </div>
+      </motion.div>
     ));
   };
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {/* Auto Notification */}
-      {autoNotification && (
-        <div className="absolute bottom-20 right-0 w-64 bg-white shadow-lg rounded-lg p-4 border animate-fade-in">
-          <div className="flex justify-between items-center mb-2">
-            <div className="flex items-center">
-              <Info className="mr-2 text-blue-600" size={20} />
-              <span className="font-semibold text-gray-800">Assistant Notification</span>
-            </div>
-            <button 
-              onClick={closeAutoNotification}
-              className="text-gray-500 hover:text-gray-700"
-            >
-              <X size={16} />
-            </button>
-          </div>
-          <p className="text-sm text-gray-600">{autoNotification.message}</p>
-        </div>
-      )}
-
-      {/* Chatbot Trigger Button */}
-      {!isOpen && (
-        <button 
-          onClick={toggleChat}
-          className="bg-blue-600 text-white p-4 rounded-full shadow-xl hover:bg-blue-700 transition-all"
-        >
-          <MessageCircle size={24} />
-        </button>
-      )}
-
-      {/* Chatbot Panel */}
-      {isOpen && (
-        <div 
-          className={`
-            w-80 md:w-96 lg:w-[420px] 
-            bg-white rounded-xl shadow-2xl border 
-            fixed right-6 bottom-6
-            ${isMinimized ? 'h-16 overflow-hidden' : 'h-[600px] flex flex-col'}
-          `}
-        >
-          {/* Header */}
-          <div className="bg-blue-600 text-white p-4 rounded-t-xl flex justify-between items-center">
-            <h3 className="font-semibold text-lg">Portfolio Assistant</h3>
-            <div className="flex space-x-2">
+      <AnimatePresence>
+        {autoNotification && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="absolute bottom-20 right-0 w-72 bg-white shadow-2xl rounded-2xl p-5 border"
+          >
+            <div className="flex justify-between items-center mb-3">
+              <div className="flex items-center">
+                <Info className="mr-2 text-indigo-600" size={24} />
+                <span className="font-bold text-gray-800">Assistant</span>
+              </div>
               <button 
-                onClick={() => setIsMinimized(!isMinimized)}
-                className="hover:bg-blue-700 p-1 rounded"
-                aria-label={isMinimized ? "Maximize" : "Minimize"}
-              >
-                {isMinimized ? <Maximize2 size={20} /> : <Minimize2 size={20} />}
-              </button>
-              <button 
-                onClick={toggleChat}
-                className="hover:bg-blue-700 p-1 rounded"
-                aria-label="Close"
+                onClick={closeAutoNotification}
+                className="text-gray-500 hover:text-gray-700"
               >
                 <X size={20} />
               </button>
             </div>
-          </div>
+            <p className="text-sm text-gray-600">{autoNotification.message}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-          {/* Chat Messages */}
-          {!isMinimized && (
-            <div className="flex-grow overflow-y-auto p-4 space-y-4">
-              {renderChatMessages()}
-              <div ref={chatEndRef} />
-            </div>
-          )}
-
-          {/* Chat Input */}
-          {!isMinimized && (
-            <div className="p-4 border-t flex items-center space-x-2">
-              <input 
-                type="text"
-                value={userMessage}
-                onChange={(e) => setUserMessage(e.target.value)}
-                onKeyDown={handleKeyPress}
-                placeholder="Type a message..."
-                className="flex-grow p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                disabled={isLoading}
-              />
-              <button 
-                onClick={sendMessage}
-                disabled={isLoading || !userMessage.trim()}
-                className={`
-                  bg-blue-600 text-white p-3 rounded-lg 
-                  ${(isLoading || !userMessage.trim()) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}
-                  transition-all duration-200
-                `}
-              >
-                <Send size={20} />
-              </button>
-            </div>
-          )}
-        </div>
+      {/* Chatbot Trigger Button */}
+      {!isOpen && (
+        <motion.button 
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={toggleChat}
+          className="bg-indigo-600 text-white p-4 rounded-full shadow-xl hover:bg-indigo-700 transition-all"
+        >
+          <MessageCircle size={24} />
+        </motion.button>
       )}
+
+      {/* Chatbot Panel */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className={`
+              w-80 md:w-96 lg:w-[420px] 
+              bg-white rounded-2xl shadow-2xl border 
+              fixed right-6 bottom-6
+              ${isMinimized ? 'h-16 overflow-hidden' : 'h-[600px] flex flex-col'}
+            `}
+          >
+            {/* Header */}
+            <div className="bg-indigo-600 text-white p-4 rounded-t-2xl flex justify-between items-center">
+              <div className="flex items-center">
+                <Bot className="mr-2" size={24} />
+                <h3 className="font-semibold text-lg">Portfolio Assistant</h3>
+              </div>
+              <div className="flex space-x-2">
+                <button 
+                  onClick={() => setIsMinimized(!isMinimized)}
+                  className="hover:bg-indigo-700 p-1 rounded"
+                  aria-label={isMinimized ? "Maximize" : "Minimize"}
+                >
+                  {isMinimized ? <Maximize2 size={20} /> : <Minimize2 size={20} />}
+                </button>
+                <button 
+                  onClick={toggleChat}
+                  className="hover:bg-indigo-700 p-1 rounded"
+                  aria-label="Close"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+
+            {/* Chat Messages */}
+            {!isMinimized && (
+              <div className="flex-grow overflow-y-auto p-4 space-y-4">
+                {renderChatMessages()}
+                <div ref={chatEndRef} />
+              </div>
+            )}
+
+            {/* Chat Input */}
+            {!isMinimized && (
+              <div className="p-4 border-t flex items-center space-x-2">
+                <input 
+                  type="text"
+                  value={userMessage}
+                  onChange={(e) => setUserMessage(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  placeholder="Ask me about the portfolio..."
+                  className="flex-grow p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  disabled={isLoading}
+                />
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={sendMessage}
+                  disabled={isLoading || !userMessage.trim()}
+                  className={`
+                    bg-indigo-600 text-white p-3 rounded-lg 
+                    ${(isLoading || !userMessage.trim()) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-700'}
+                    transition-all duration-200
+                  `}
+                >
+                  <Send size={20} />
+                </motion.button>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
