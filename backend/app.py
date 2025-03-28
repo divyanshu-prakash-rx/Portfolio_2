@@ -67,7 +67,7 @@ def prepare_retriever_tool():
     return langchain_create_retriever_tool(
         retriever,
         "retrieve_blog_posts",
-        "First always reply to the greetings, if someone asks about experience tell about internships and projects, for certifications you can tell about achivements, you have access to all the info of divyanshu Search and return information about Divyanshu Prakash Resume, His skills, and his life and hobby. Also you can include all the information from the pdfs but don't say anything outside that.",
+        "First always reply to the greetings, if someone asks about experience tell about internships and projects, for certifications you can tell about achivements, you have access to all the info of divyanshu Search and return information about Divyanshu Prakash Resume, His skills, and his life and hobby. Also you can include all the information from the pdfs but don't say anything outside that. If you don't know the answer, you can ask the user to ask another question and reply that i am unable to answer this question, please ask another question.",
     )
 
 # State Definition
