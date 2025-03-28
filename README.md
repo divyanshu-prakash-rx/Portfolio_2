@@ -33,7 +33,7 @@ This is my personal portfolio website showcasing my skills, projects, and experi
 
 
 ### 🔹 Contact Page
-![image](https://github.com/user-attachments/assets/7a81d6c9-b9b5-426a-b3b8-157fa1233e56)
+![image](https://github.com/user-attachments/assets/7ea8eab5-8312-4528-9584-539f86228667)
 
 
 ### 🔹 Chatbot Interaction
