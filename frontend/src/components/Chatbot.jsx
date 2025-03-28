@@ -60,7 +60,7 @@ export default function ChatbotComponent() {
       console.error("Error:", error);
       setChatHistory((prevChat) => [
         ...prevChat, 
-        { role: "bot", content: "Sorry, there was an error processing your message." }
+        { role: "bot", content: "Sorry, Busy server please try again after some time..." }
       ]);
     } finally {
       setIsLoading(false);
