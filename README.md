@@ -49,6 +49,9 @@ git clone https://github.com/yourusername/portfolio.git
 # Navigate to the project directory
 cd portfolio
 
+# Navigate to the frontend directory
+cd frontend
+
 # Install frontend dependencies
 npm install
 
@@ -62,4 +65,4 @@ cd backend
 pip install -r requirements.txt
 
 # Start the backend server
-flask run
+python app.py
