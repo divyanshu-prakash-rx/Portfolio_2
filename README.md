@@ -21,23 +21,23 @@ This is my personal portfolio website showcasing my skills, projects, and experi
 
 ## 📷 Screenshots
 ### 🔹 Home Page
-![image](https://github.com/user-attachments/assets/45b4c538-496e-414a-a836-1d6aca092002)
+![image](https://github.com/user-attachments/assets/0f7172c9-2ac8-48ee-905c-31550e23c912)
 
 
 ### 🔹 Projects Section
-![image](https://github.com/user-attachments/assets/25cd44b6-8c9a-4897-932a-6fa9f81403f4)
+![image](https://github.com/user-attachments/assets/e62db6b9-c26e-4b53-84e8-b947b9cbb938)
 
 
 ### 🔹 About Page
-![image](https://github.com/user-attachments/assets/43906921-e1bc-4416-aafd-b13e3b141bf0)
+![image](https://github.com/user-attachments/assets/65749749-7e43-4eae-8f9a-4b9cb47ef48f)
 
 
 ### 🔹 Contact Page
-![image](https://github.com/user-attachments/assets/7ea8eab5-8312-4528-9584-539f86228667)
+![image](https://github.com/user-attachments/assets/3a369b0d-9be7-4f1c-bf8f-118519208f59)
 
 
 ### 🔹 Chatbot Interaction
-![image](https://github.com/user-attachments/assets/58cf44c3-ce1a-43f5-a2a9-8b71be336141)
+![image](https://github.com/user-attachments/assets/3842d944-2f57-4470-b8d1-3b27ce3c81e3)
 
 
 ## 📂 Installation
