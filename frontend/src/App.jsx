@@ -11,16 +11,16 @@ import Footer from './components/Footer';
 function App() {
   return (
       <div className="App">
-        {/* Navbar will be present on all pages */}
         <Navbar />
-
+      <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/contact" element={<ContactPage />} />
-        </Routes>
+        </Routes></Router>
         <Footer />
+
         <ChatbotComponent />
       </div>
   );
