@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, MapPin, Mail, Phone } from 'lucide-react';
+import { Send, MapPin, Mail, Linkedin, Github, Twitter } from 'lucide-react';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -8,9 +8,7 @@ export default function ContactPage() {
     message: ''
   });
   const [result, setResult] = useState("Send Message");
-  const handleEmail = () => {
-    window.location.href = "mailto:medivyanshu780@gmail.com";
-  };
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
@@ -34,7 +32,7 @@ export default function ContactPage() {
     const data = await response.json();
 
     if (data.success) {
-      setResult("Message Sent, Will get back to you soon!🤗");
+      setResult("Message Sent Successfully! 🚀");
       event.target.reset();
       setTimeout(() => {
         setResult("Send Another Message");
@@ -46,16 +44,20 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-16 px-4">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">Contact Me</h2>
-
-        <div className="grid md:grid-cols-2 gap-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-16 px-4 flex items-center justify-center">
+      <div className="max-w-5xl w-full mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <div className="grid md:grid-cols-2">
           {/* Contact Form */}
-          <div className="bg-white p-8 rounded-lg shadow-md">
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-gray-700 mb-2">Name</label>
+          <div className="bg-indigo-50 p-12 flex flex-col justify-center">
+            <h2 className="text-4xl font-extrabold text-gray-800 mb-6 leading-tight">
+              Let's Connect
+            </h2>
+            <p className="text-gray-600 mb-8">
+              Have a project in mind? Drop me a message and I'll get back to you.
+            </p>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Name</label>
                 <input
                   type="text"
                   id="name"
@@ -63,11 +65,11 @@ export default function ContactPage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-300"
                 />
               </div>
-              <div className="mb-4">
-                <label htmlFor="email" className="block text-gray-700 mb-2">Email</label>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                 <input
                   type="email"
                   id="email"
@@ -75,11 +77,11 @@ export default function ContactPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-300"
                 />
               </div>
-              <div className="mb-6">
-                <label htmlFor="message" className="block text-gray-700 mb-2">Message</label>
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Message</label>
                 <textarea
                   id="message"
                   name="message"
@@ -87,59 +89,62 @@ export default function ContactPage() {
                   onChange={handleChange}
                   required
                   rows="4"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-300"
                 ></textarea>
               </div>
               <button
-                  type="submit"
-                  className={`w-full p-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md shadow-lg transition-all duration-300 `}
-                >
-                  {result}
-                </button>
+                type="submit"
+                className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition duration-300 flex items-center justify-center space-x-2"
+              >
+                <Send className="w-5 h-5" />
+                <span>{result}</span>
+              </button>
             </form>
           </div>
 
           {/* Contact Information */}
-          <div className="bg-white p-8 rounded-lg shadow-md">
-            <h3 className="text-2xl font-semibold mb-6 text-gray-800">Get in Touch</h3>
-            <p className="text-gray-600 mb-6">
-              I'm always open to discussing new projects, creative ideas, 
-              or opportunities to be part of your vision.
+          <div className="bg-indigo-600 text-white p-12 flex flex-col justify-center">
+            <h3 className="text-3xl font-bold mb-6">Contact Information</h3>
+            <p className="mb-8 text-indigo-100">
+              Feel free to reach out through these channels. I'm always eager to explore new opportunities and collaborations.
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-6 mb-8">
               <div className="flex items-center">
-                <MapPin className="mr-4 text-blue-600" />
-                <span className="text-gray-700">Chhatishgarh, India</span>
+                <MapPin className="mr-4 w-6 h-6" />
+                <span>Chhatishgarh, India</span>
               </div>
               <div className="flex items-center">
-                <Mail className="mr-4 text-blue-600" />
-                <span className="text-gray-700">divyanshup@iitbhilai.ac.in</span>
+                <Mail className="mr-4 w-6 h-6" />
+                <span>divyanshup@iitbhilai.ac.in</span>
               </div>
             </div>
 
-            <div className="mt-8">
-              <h4 className="text-xl font-semibold mb-4 text-gray-800">Social Links</h4>
-              <div className="flex space-x-4">
-                <a 
-                  href="https://www.linkedin.com/in/divyanshu-prakash-rx/" 
-                  className="text-gray-700 hover:text-blue-600 transition-colors"
-                >
-                  LinkedIn
-                </a>
-                <a 
-                  href="https://github.com/divyanshu-prakash-rx" 
-                  className="text-gray-700 hover:text-blue-600 transition-colors"
-                >
-                  GitHub
-                </a>
-                <a 
-                  href="https://x.com/DivyanshuPrak20" 
-                  className="text-gray-700 hover:text-blue-600 transition-colors"
-                >
-                  Twitter
-                </a>
-              </div>
+            <div className="flex space-x-6">
+              <a 
+                href="https://www.linkedin.com/in/divyanshu-prakash-rx/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-indigo-200 transition duration-300 transform hover:scale-110"
+              >
+                <Linkedin className="w-6 h-6" />
+              </a>
+              <a 
+                href="https://github.com/divyanshu-prakash-rx" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-indigo-200 transition duration-300 transform hover:scale-110"
+              >
+                <Github className="w-6 h-6" />
+              </a>
+              <a 
+                href="https://x.com/DivyanshuPrak20" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white hover:text-indigo-200 transition duration-300 transform hover:scale-110"
+              >
+                <Twitter className="w-6 h-6" />
+              </a>
             </div>
           </div>
         </div>
