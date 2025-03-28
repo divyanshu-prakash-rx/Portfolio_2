@@ -46,7 +46,8 @@ export default function ChatbotComponent() {
     setUserMessage("");
 
     try {
-      const response = await fetch("https://portfolio-backend-u1xt.onrender.com/chatbot", {
+      const response = await fetch("http://127.0.0.1:5000/chatbot", {
+      // const response = await fetch("https://portfolio-backend-u1xt.onrender.com/chatbot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage }),
