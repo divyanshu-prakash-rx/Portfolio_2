@@ -12,7 +12,7 @@ export default function HomePage() {
           transition={{ duration: 0.6 }}
           className="mb-12"
         >
-          <h1 className="text-5xl md:text-7xl font-extrabold bg-clip-text  mb-4">
+          <h1 className="text-5xl md:text-7xl font-extrabold bg-clip-text  mb-4 mt-10 md:mt-4">
             Divyanshu Prakash
           </h1>
           <h2 className="text-2xl md:text-4xl font-semibold text-gray-700 mb-8">

@@ -68,7 +68,7 @@ export default function ProjectsPage() {
       : projects.filter((project) => project.category === activeFilter);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-16 px-4 mt-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-16 px-4 mt-10">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-14">
           <h2 className="text-5xl font-extrabold text-gray-800 mb-4">

@@ -44,7 +44,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-16 px-4 flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 py-16 px-4 flex items-center justify-center mt-10">
       <div className="max-w-5xl w-full mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
         <div className="grid md:grid-cols-2">
           {/* Contact Form */}
