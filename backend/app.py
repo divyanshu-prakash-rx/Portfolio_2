@@ -11,7 +11,7 @@ app = Flask(__name__, static_folder="static")
 
 from langchain import hub
 from langchain_community.document_loaders import WebBaseLoader, PyPDFLoader
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma  # Instead of langchain_community.vectorstores
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
@@ -23,10 +23,34 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_together import ChatTogether
+import hashlib
+import pickle
 
 # API Keys and Environment Setup
-os.environ["GOOGLE_API_KEY"] = "AIzaSyDNQ3uLiUTQVljD8Cj5vAAB1HLnk2FQnU4"
+os.environ["GOOGLE_API_KEY"] = "AIzaSyCSh5BISs2Ym6gkCdQWwf_rpKWrpznq8i8"
 TOGETHER_AI_API_KEY = "tgp_v1_onQLidpEUHatHkJsBsQQL9ZvdcEnk-X-qqLY17WAseg"
+
+CACHE_FILE = "query_cache.pkl"  # Persistent storage for caching responses
+
+# Load cache from file
+def load_cache():
+    if os.path.exists(CACHE_FILE):
+        with open(CACHE_FILE, "rb") as f:
+            return pickle.load(f)
+    return {}
+
+# Save cache to file
+def save_cache(cache):
+    with open(CACHE_FILE, "wb") as f:
+        pickle.dump(cache, f)
+
+# Generate hash for user input
+def hash_query(query):
+    return hashlib.md5(query.encode()).hexdigest()
+
+# Initialize cache
+CACHE = load_cache()
+
 
 # Flask App Initialization
 app = Flask(__name__)
@@ -34,7 +58,7 @@ CORS(app)
 
 # Global Variable for Retriever
 RETRIEVER = None
-
+CHROMA_DB_PATH = "./chroma_db"
 # Utility Functions
 def load_pdf_documents():
     pdf_folder = "./mypdfs"
@@ -44,30 +68,90 @@ def load_pdf_documents():
 
 def setup_retriever():
     global RETRIEVER
-    if RETRIEVER is None:
-        docs_list = load_pdf_documents()
-        text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-            chunk_size=1000, chunk_overlap=50
-        )
-        doc_splits = text_splitter.split_documents(docs_list)
-        embedding = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
-        persist_directory = "./chroma_db"
-        vectorstore = Chroma.from_documents(
-            documents=doc_splits,
-            collection_name="rag-chroma",
-            embedding=embedding,
-            persist_directory=persist_directory,
-        )
-        RETRIEVER = vectorstore.as_retriever()
-    return RETRIEVER
+    persist_directory = "./chroma_db"  
+    collection_name = "rag_chroma_fixed" 
+
+    if RETRIEVER is not None:
+        return RETRIEVER
+
+    if os.path.exists(persist_directory) and os.listdir(persist_directory):
+        try:
+            vectorstore = Chroma(
+                persist_directory=persist_directory,
+                collection_name=collection_name, 
+                embedding_function=GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+            )
+            stored_ids = vectorstore.get()["ids"]
+
+            if stored_ids:
+                print(f"🔍 Found {len(stored_ids)} stored embeddings in {collection_name}. ✅ Using existing DB.")
+                RETRIEVER = vectorstore.as_retriever(search_kwargs={"k": 5})
+                return RETRIEVER
+
+            print("⚠️ Chroma DB found but empty. Rebuilding DB...")
+
+        except Exception as e:
+            print(f"🚨 Error loading Chroma DB: {str(e)}. Rebuilding DB...")
+
+    print("🚨 No existing Chroma DB found or empty. Creating a new one...")
+    return rebuild_chroma_db(persist_directory, collection_name)
+
+
+
+def rebuild_chroma_db(persist_directory, collection_name):
+    """Rebuilds Chroma DB in a fixed folder, avoiding multiple subfolders."""
+    print("♻️ Rebuilding Chroma DB...")
+
+    docs_list = load_pdf_documents()
+    if not docs_list:
+        print("🚨 ERROR: No PDFs found to process. Chroma DB cannot be built.")
+        return None
+
+    text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+        chunk_size=1000, chunk_overlap=50
+    )
+    doc_splits = text_splitter.split_documents(docs_list)
+
+    embedding = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+    
+    vectorstore = Chroma.from_documents(
+        documents=doc_splits,
+        collection_name=collection_name,
+        embedding=embedding,
+        persist_directory=persist_directory,  
+    )
+
+    stored_ids = vectorstore.get()["ids"]
+    print(f"✅ Chroma DB rebuilt with {len(stored_ids)} embeddings.")
+
+    # 🔴 Force Chroma to save everything in the correct folder
+    del vectorstore  
+
+    vectorstore = Chroma(
+        persist_directory=persist_directory,
+        collection_name=collection_name,
+        embedding_function=embedding
+    )
+    print(f"🔍 Confirmed: {len(vectorstore.get()['ids'])} embeddings stored in Chroma DB.")
+
+    return vectorstore.as_retriever(search_kwargs={"k": 5})
+
+
+
+
 
 # LLM and Tool Setup
 def prepare_retriever_tool():
-    retriever = setup_retriever()
+    retriever = setup_retriever()  
+
     return langchain_create_retriever_tool(
         retriever,
         "retrieve_blog_posts",
-        "First always reply to the greetings, if someone asks about experience tell about internships and projects, for certifications you can tell about achivements, you have access to all the info of divyanshu Search and return information about Divyanshu Prakash Resume, His skills, and his life and hobby. Also you can include all the information from the pdfs but don't say anything outside that. If you don't know the answer, you can ask the user to ask another question but before denying search thouroughly if the question is not in the pdfs. Also if the question really doesn't exist in the pdfs, just say sorry I don't know the answer to this question but don't let them know that you are using some documents to find answers.",
+        "First always reply to greetings. For experience, discuss internships and projects. For certifications, mention achievements. "
+        "You have access to all the info of Divyanshu. Search and return details about Divyanshu Prakash's resume, skills, life, and hobbies. "
+        "Include only information from the PDFs and never provide anything outside them. "
+        "If the answer isn't available, search thoroughly, and if still unknown, simply say, 'Sorry, I don't know the answer to this question.' "
+        "Do not reveal the use of PDFs for answering queries.",
     )
 
 # State Definition
@@ -115,13 +199,13 @@ def create_workflow():
         scored_result = chain.invoke({"question": question, "context": docs})
         score = scored_result.binary_score
 
-        if score == "yes":
+        if "yes" in score.lower():
             print("---DECISION: DOCS RELEVANT---")
             return "generate"
         else:
-            print("---DECISION: DOCS NOT RELEVANT---")
-            print(score)
+            print("---DECISION: TRYING TO IMPROVE QUERY---")
             return "rewrite"
+
 
     def agent(state):
         print("---CALL AGENT---")
@@ -216,20 +300,31 @@ def create_workflow():
 
     return workflow.compile()
 
+
 def query_llm(user_input):
+    query_hash = hash_query(user_input)
+
+    if query_hash in CACHE:
+        print("✅ Using Cached Response")
+        return CACHE[query_hash] 
+
+    print("🌐 Fetching from API")
     graph = create_workflow()
-    inputs = {
-        "messages": [
-            ("user", user_input),
-        ]
-    }
+    inputs = {"messages": [("user", user_input)]}
+
     final_answer = "nothing"
     for output in graph.stream(inputs):
         for key, value in output.items():
-            if key == "generate" or key == "agent":
+            if key in ["generate", "agent"]:
                 if value.get("messages"):
                     last_message = value["messages"][-1]
                     final_answer = last_message.content if isinstance(last_message, AIMessage) else str(last_message)
+
+    if not final_answer.strip():
+        final_answer = "Sorry, I can only answer questions related to Divyanshu Prakash and his details."
+
+    CACHE[query_hash] = final_answer 
+    save_cache(CACHE)  
 
     return final_answer
 
@@ -237,7 +332,7 @@ def query_llm(user_input):
 @app.route("/chatbot", methods=["POST"])
 def chatbot():
     data = request.json
-    user_message = data.get("message", "")
+    user_message = data.get("message", "").strip()
 
     if not user_message:
         return jsonify({"reply": "I didn't get any message."})
@@ -250,4 +345,4 @@ def serve_static(filename):
     return send_from_directory("static", filename)
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
