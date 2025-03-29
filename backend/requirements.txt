@@ -12,3 +12,4 @@ together
 pypdf
 langchain-together
 gunicorn
+langchain_chroma
