@@ -25,10 +25,11 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_together import ChatTogether
 import hashlib
 import pickle
+import env
 
 # API Keys and Environment Setup
-os.environ["GOOGLE_API_KEY"] = "AIzaSyCSh5BISs2Ym6gkCdQWwf_rpKWrpznq8i8"
-TOGETHER_AI_API_KEY = "tgp_v1_onQLidpEUHatHkJsBsQQL9ZvdcEnk-X-qqLY17WAseg"
+os.environ["GOOGLE_API_KEY"] = env.GOOGLE_API_KEY
+TOGETHER_AI_API_KEY = env.TOGETHER_AI_API_KEY
 
 CACHE_FILE = "query_cache.pkl"  # Persistent storage for caching responses
 
