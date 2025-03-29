@@ -8,7 +8,7 @@ from flask_cors import CORS
 from flask import Flask, send_from_directory
 
 app = Flask(__name__, static_folder="static")
-
+from dotenv import load_dotenv
 from langchain import hub
 from langchain_community.document_loaders import WebBaseLoader, PyPDFLoader
 from langchain_chroma import Chroma  # Instead of langchain_community.vectorstores
@@ -25,7 +25,7 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_together import ChatTogether
 import hashlib
 import pickle
-
+load_dotenv()
 # API Keys and Environment Setup
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 TOGETHER_AI_API_KEY = os.getenv("TOGETHER_AI_API_KEY")
