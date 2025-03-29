@@ -22,5 +22,3 @@ frontend/*.local
 *.njsproj
 *.sln
 *.sw?
-
-backend/env.py
