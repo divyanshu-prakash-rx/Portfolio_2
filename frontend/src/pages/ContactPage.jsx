@@ -48,7 +48,7 @@ export default function ContactPage() {
       <div className="max-w-5xl w-full mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
         <div className="grid md:grid-cols-2">
           {/* Contact Form */}
-          <div className="bg-indigo-50 p-12 flex flex-col justify-center">
+          <div className=" p-12 flex flex-col justify-center">
             <h2 className="text-4xl font-extrabold text-gray-800 mb-6 leading-tight">
               Let's Connect
             </h2>
